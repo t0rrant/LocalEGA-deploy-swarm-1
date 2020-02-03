@@ -200,5 +200,9 @@ buildNumber.properties
 *.der
 *.p12
 conf.ini
+elasticsearch.yml
+kibana.yml
+logstash.yml
+logstash.conf
 ega.sec.pass
 docker-stack.yml

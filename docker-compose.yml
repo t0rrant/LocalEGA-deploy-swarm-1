@@ -254,10 +254,74 @@ services:
       - source: ega.sec.pass
         target: /etc/ega/crypt4gh/key.pass
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        window: 120s
+    environment:
+      - ELASTIC_PASSWORD
+      - ES_JAVA_OPTS=-Xmx512m -Xms512m
+      - discovery.type=single-node
+    configs:
+      - source: rootCA.pem
+        target: /usr/share/elasticsearch/config/CA.cert
+      - source: server.pem
+        target: /usr/share/elasticsearch/config/server.cert
+      - source: server-key.pem
+        target: /usr/share/elasticsearch/config/server.key
+      - source: elasticsearch.yml
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+    volumes:
+      - es:/usr/share/elasticsearch/data
+
+  ega_monitor:
+    image: docker.elastic.co/logstash/logstash:7.5.1
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        window: 120s
+    environment:
+      - LS_JAVA_OPTS=-Xmx512m -Xms512m
+    configs:
+      - source: rootCA.pem
+        target: /etc/ega/ssl/CA.cert
+      - source: logstash.yml
+        target: /usr/share/logstash/config/logstash.yml
+      - source: logstash.conf
+        target: /usr/share/logstash/pipeline/logstash.conf
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.5.1
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        window: 120s
+    ports:
+      - 5601:5601
+    configs:
+      - source: rootCA.pem
+        target: /etc/ega/ssl/CA.cert
+      - source: server.pem
+        target: /etc/ega/ssl/server.cert
+      - source: server-key.pem
+        target: /etc/ega/ssl/server.key
+      - source: client.pem
+        target: /etc/ega/ssl/client.cert
+      - source: client-key.pem
+        target: /etc/ega/ssl/client.key
+      - source: kibana.yml
+        target: /usr/share/kibana/config/kibana.yml
+
 volumes:
   tsd:
   db:
   vault:
+  es:
 
 configs:
   rootCA.pem:
@@ -287,4 +351,12 @@ configs:
   ega.pub.pem:
     external: true
   jwt.pub.pem:
+    external: true
+  elasticsearch.yml:
+    external: true
+  logstash.yml:
+    external: true
+  logstash.conf:
+    external: true
+  kibana.yml:
     external: true

@@ -1,0 +1,17 @@
+---
+server.name: kibana
+server.host: "0"
+server.ssl.enabled: true
+server.ssl.key: /etc/ega/ssl/server.key
+server.ssl.certificate: /etc/ega/ssl/server.cert
+
+elasticsearch.hosts: [ "https://elasticsearch:9200" ]
+elasticsearch.username: elastic
+elasticsearch.password: ELASTIC_PASSWORD
+elasticsearch.ssl.alwaysPresentCertificate: true
+elasticsearch.ssl.verificationMode: full
+elasticsearch.ssl.certificateAuthorities: /etc/ega/ssl/CA.cert
+elasticsearch.ssl.certificate: /etc/ega/ssl/client.cert
+elasticsearch.ssl.key: /etc/ega/ssl/client.key
+
+xpack.monitoring.ui.container.elasticsearch.enabled: true

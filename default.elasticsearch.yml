@@ -1,0 +1,17 @@
+---
+cluster.name: "docker-cluster"
+network.host: 0.0.0.0
+
+xpack.license.self_generated.type: trial
+xpack.security.enabled: true
+xpack.monitoring.collection.enabled: true
+xpack.security.http.ssl.enabled: true
+xpack.security.http.ssl.key: /usr/share/elasticsearch/config/server.key
+xpack.security.http.ssl.certificate_authorities: /usr/share/elasticsearch/config/CA.cert
+xpack.security.http.ssl.certificate: /usr/share/elasticsearch/config/server.cert
+xpack.security.transport.ssl.enabled: true
+xpack.security.transport.ssl.verification_mode: full
+#xpack.security.transport.ssl.client_authentication: required
+xpack.security.transport.ssl.certificate_authorities: /usr/share/elasticsearch/config/CA.cert
+xpack.security.transport.ssl.certificate: /usr/share/elasticsearch/config/server.cert
+xpack.security.transport.ssl.key: /usr/share/elasticsearch/config/server.key
